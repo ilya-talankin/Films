@@ -1,0 +1,8 @@
+{
+    "files": [
+        "model.py",
+        "main.qml",
+        "main.py",
+        "ImageRectangle.qml"
+    ]
+}

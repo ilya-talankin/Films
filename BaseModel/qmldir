@@ -1,0 +1,2 @@
+module BaseModel
+typeinfo model.qmltypes
