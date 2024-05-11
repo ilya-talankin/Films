@@ -2,27 +2,22 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
 import QtQuick.Layouts
+
 Rectangle {
-    RowLayout {
+    ColumnLayout {
+        spacing: 0
         height: parent.height
         width: parent.width
         Rectangle {
-            height: parent.height
-            width: 0.8 * parent.width
+            id: imageSection
+            Layout.fillHeight: true
+            width: parent.width
             border.color: "black"
             border.width: 1
             Image {
-                source: display
+                source: model.path
                 width: parent.width
                 height: parent.height
-                // fillMode: Image.PreserveAspectFit
-            }
-            TextArea {
-                text: "Path: " + model.display + "\nconcentration: " + model.concentration
-                width: parent.width
-                height: parent.height
-                readOnly: true
-                color: "black"
             }
 
             Button {
@@ -31,34 +26,45 @@ Rectangle {
                     console.log("Deliting, ", index)
                     lv.model.remove(index)
                 }
-                anchors.fill: parent
-                opacity: deleteButton.hovered? 0.6: 0.0
+                anchors.top: parent.top
+                anchors.right: parent.right
+                opacity: deleteButton.hovered? 0.9: 0.5
                 icon.source: "icons/close.png"
-                icon.width: parent.width
-                icon.height: parent.height
+                height: 30
+                width: height
                 background: Rectangle {
-                    color: "white"
+                    color: deleteButton.hovered ? "red" : "white"
                 }
             }
         }
-        Rectangle {
-            width: 0.2 * parent.width
-            TextField {
-                id: textField
-                placeholderText: "Введите концентрацию"
-                validator: DoubleValidator {
-                    bottom: 0.0
-                    notation: DoubleValidator.StandardNotation
-                }
-                height: 30
-                focus: false
-                onEditingFinished: {
-                    model.concentration = textField.text
-                    console.log("Коцентрация:", textField.text);
-                    textField.clear();
-                    textField.focus = false;
-                }
+        TextField {
+            id: textField
+            placeholderText: "Введите концентрацию"
+            validator: DoubleValidator {
+                bottom: 0.0
+                notation: DoubleValidator.StandardNotation
             }
+            height: 30
+            focus: false
+            Layout.fillWidth: true
+            onEditingFinished: {
+                model.concentration = textField.text
+                console.log("Коцентрация:", textField.text);
+                textField.clear();
+                textField.focus = false;
+            }
+        }
+        Text {
+            padding: 3
+            text: "Имя файла: " + model.display
+            Layout.fillWidth: true
+            wrapMode: Text.Wrap
+        }
+        Text {
+            padding: 3
+            text: "Концентрация:  <b>" + model.concentration + "<\b>"
+            Layout.fillWidth: true
+            wrapMode: Text.Wrap
         }
     }
 }
